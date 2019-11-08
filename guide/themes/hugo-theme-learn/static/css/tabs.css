@@ -1,0 +1,56 @@
+#body .nav-tabs {
+	position: unset;
+	width: unset;
+}
+
+.tab-content > .tab-pane {
+	display: none;
+}
+
+.tab-pane {
+	padding: 3px 0px;
+}
+
+.tab-pane {
+	padding: 3px 0px;
+}
+
+.tab-content > .active {
+	display: block;
+}
+
+.nav-tabs {
+	color: #0f0f0f;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.nav-tabs > li {
+	color: #0f0f0f;
+	float: left;
+}
+
+.nav-tabs > li > a {
+	display: block;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+pre {
+	display: block;
+	padding: 9.5px;
+	margin: 10px 0px 10px;
+	line-height: 1;
+}
+
+.code-tabs {
+	margin: 10px 0px 0px 00px;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+	color: #000 !important;
+	background: transparent;
+}
