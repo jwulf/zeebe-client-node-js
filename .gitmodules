@@ -1,0 +1,4 @@
+[submodule "guide/public"]
+	path = guide/public
+	url = git@github.com:jwulf/zeebe-node-guide.git
+	branch = master
