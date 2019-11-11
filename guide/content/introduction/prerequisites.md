@@ -10,6 +10,8 @@ This guide is intended for Node.js developers who want to develop Zeebe client a
 
 Familiarity with ES6 JavaScript or the [TypeScript](https://www.typescriptlang.org/) programming language, [Node.js](https://nodejs.org/en/download/), and a working development environment are assumed.
 
+Configuring your TypeScript transpilation is out of scope. For that, consult the [TypeScript documentation](https://www.typescriptlang.org/docs/home.html).
+
 ## What this guide covers
 
 This guide walks you through using the JavaScript client for Zeebe, giving you the practical steps to write a fully-fledged Zeebe client application using either ES6 JavaScript or TypeScript.
