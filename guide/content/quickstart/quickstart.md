@@ -13,7 +13,7 @@ draft: false
 
 Create an `index.js` file (or `index.ts` for TypeScript).
 
-In there, import the Zeebe Node library:
+Edit the file, and import the Zeebe Node library:
 
 {{< tabs >}}
 {{< tab TypeScript >}}
@@ -86,7 +86,7 @@ zbc.topology()
 
 For the rest of this guide, we will mostly be using the async/await approach to Promise handling in examples.
 
-Here is the same code to query the broker topology, written using async/await:
+Here is the same code to query the broker topology, written using async/await syntax:
 
 {{< tabs >}}
 {{< tab TypeScript >}}
@@ -129,7 +129,7 @@ main()
 
 You can use either style in your code.
 
-## Output
+## Output: Query the broker topology
 
 If the broker is running and accessible, you will see something like the following:
 
@@ -207,7 +207,7 @@ Log messages will now be formatted for your viewing pleasure:
 
 The next task is to deploy a workflow to the broker.
 
-The method `ZBClient.deployWorkflow()` takes a path to a .bpmn file, and deploys that BPMN file to the broker, returning a Promise of a broker response.
+The method `ZBClient.deployWorkflow()` takes a path to a .bpmn file, and deploys that BPMN file to the broker, returning a Promise of a broker response - a `DeployWorkflowResponse`.
 
 Here is the sample workflow that we will be using:
 
@@ -260,7 +260,7 @@ main()
 {{< /tab >}}
 {{< /tabs >}}
 
-## Output
+## Output: Deploy a Workflow
 
 You will see output similar to the following:
 
@@ -282,9 +282,9 @@ The workflow has been deployed to the broker, and you can now start an instance 
 
 ## Create a Workflow Instance
 
-The method `ZBClient.createWorkflowInstance()` creates (and starts) a workflow instance. It takes a BPMN Process Id and an initial variables object, and returns a Promise of a create workflow instance response.
+The method `ZBClient.createWorkflowInstance()` creates (and starts) a workflow instance. It takes a BPMN Process Id and an initial variables object, and returns a Promise of a `CreateWorkflowInstance` response.
 
-There is no problem leaving the `deployWorkflow` command in the code - the broker will not update the deployment if the file has not changed since the last deployment, and it ensures that the workflow definition we are about to start an instance of is deployed.
+There is no problem leaving the `deployWorkflow` command in the code - the broker will not update the deployment if the file has not changed since the last deployment, and it ensures that the workflow definition we are about to start an instance of is, in fact, deployed.
 
 {{< tabs >}}
 {{< tab TypeScript >}}
@@ -327,7 +327,7 @@ main()
 {{< /tab >}}
 {{< /tabs >}}
 
-## Output
+## Output: Create a Workflow Instance
 
 You will see output similar to the following:
 
@@ -343,3 +343,40 @@ You will see output similar to the following:
 An instance of the workflow has been started.
 
 ## Create a Worker
+
+A worker is a process that subscribes to a task type on the broker, polling for available jobs of that task type. When jobs of that task type are available, the broker streams them to the worker in response to its polling request. The workflow's job handler is invoked for each available job.
+
+The method `ZBClient.createWorker` creates a new worker. It takes an optional worker id for tracing, a task type, and a job handler callback function. If the worker id is `null`, the library will assign a UUID. T
+
+Create a new file named `worker.js` (`worker.ts` for TypeScript).
+
+Edit the content like this:
+
+{{< tabs >}}
+{{< tab TypeScript >}}
+{{< highlight typescript >}}
+import { ZBClient } from "zeebe-node";
+
+const zbc = new ZBClient();
+
+zbc.createWorker(null, "sample-task", (job, complete) => {
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success();
+});
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
+const { ZBClient } = require('zeebe-node')
+
+const zbc = new ZBClient();
+
+zbc.createWorker(null, "sample-task", (job, complete) => {
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success();
+});
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}
