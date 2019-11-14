@@ -48,9 +48,6 @@ const ZB = require('zeebe-node')
 	const zbc = new ZB.ZBClient('localhost:26500')
 	const topology = await zbc.topology()
 	console.log(JSON.stringify(topology, null, 2))
-
-	let workflows = await zbc.listWorkflows()
-	console.log(workflows)
 })()
 ```
 
@@ -352,6 +349,49 @@ Example output:
   version: 1,
   workflowInstanceKey: '569' }
 
+```
+
+### Start a Workflow Instance of a specific version of a Workflow definition
+
+From version 0.22 of the client onward:
+
+```javascript
+const ZB = require('zeebe-node')
+
+;(async () => {
+	const zbc = new ZB.ZBClient('localhost:26500')
+	const result = await zbc.createWorkflowInstance({
+		bpmnProcessId: 'test-process',
+		variables: {
+			testData: 'something',
+		},
+		version: 5,
+	})
+	console.log(result)
+})()
+```
+
+### Start a workflow instance and await the workflow outcome
+
+From version 0.22 of the broker and client:
+
+```typescript
+const result = await zbc.createWorkflowInstanceWithResult(processId, {
+	sourceValue: 5,
+})
+```
+
+Overriding the gateway's default timeout for a workflow that needs more time to complete:
+
+```typescript
+const result = await zbc.createWorkflowInstanceWithResult({
+	bpmnProcessId: processId,
+	variables: {
+		sourceValue: 5,
+		otherValue: 'rome',
+	},
+	requestTimeout: 25000,
+})
 ```
 
 ### Publish a Message
