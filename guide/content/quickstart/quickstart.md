@@ -15,36 +15,38 @@ Create an `index.js` file (or `index.ts` for TypeScript).
 
 Edit the file, and import the Zeebe Node library:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 ## Create a ZBClient
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 This establishes a connection to a Zeebe broker running on `localhost:26500`. This is the default when no arguments are passed to the constructor and no environment variables are set.
@@ -59,72 +61,74 @@ Operations involving the broker are _asynchronous_. They involve network calls, 
 
 Here we query the broker topology using the Promise interface:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
 
 zbc.topology()
-.catch(console.error)
-.then(res => console.log(JSON.stringify(res, null, 2)))
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+  .catch(console.error)
+  .then(res => console.log(JSON.stringify(res, null, 2)))
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 zbc.topology()
-.catch(console.error)
-.then(res => console.log(JSON.stringify(res, null, 2)))
-{{< /highlight >}}
-{{< /tab >}}
+  .catch(console.error)
+  .then(res => console.log(JSON.stringify(res, null, 2)))
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 For the rest of this guide, we will mostly be using the async/await approach to Promise handling in examples.
 
 Here is the same code to query the broker topology, written using async/await syntax:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.topology()
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.topology()
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.topology()
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.topology()
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 You can use either style in your code.
@@ -170,22 +174,24 @@ The client logs to the console by default (you can inject a replacement), using 
 
 Install pino-pretty globally:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab Bash >}}
-{{< highlight bash >}}
+  {{< tab Bash >}}
+    {{< highlight bash >}}
 npm i -g pino-pretty
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 Now, pipe your program's output through pino-pretty:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab Bash >}}
-{{< highlight bash >}}
+  {{< tab Bash >}}
+    {{< highlight bash >}}
 node index.js | pino-pretty
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 Log messages will now be formatted for your viewing pleasure:
@@ -221,43 +227,44 @@ If you are using JavaScript or transpiling TypeScript in-place (outputting the .
 
 If you are transpiling your TypeScript from a source directory to an output directory, then put the .bpmn file in the directory above your source directory. You will need to use the path `../sample.bpmn`.
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.deployWorkflow('./sample.bpmn')
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.deployWorkflow('./sample.bpmn')
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.deployWorkflow('./sample.bpmn')
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.deployWorkflow('./sample.bpmn')
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 ## Output: Deploy a Workflow
@@ -286,45 +293,46 @@ The method `ZBClient.createWorkflowInstance()` creates (and starts) a workflow i
 
 There is no problem leaving the `deployWorkflow` command in the code - the broker will not update the deployment if the file has not changed since the last deployment, and it ensures that the workflow definition we are about to start an instance of is, in fact, deployed.
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstance('sample-process', {});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstance('sample-process', {});
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstance('sample-process', {});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstance('sample-process', {});
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
 
 ## Output: Create a Workflow Instance
@@ -346,37 +354,40 @@ An instance of the workflow has been started.
 
 A worker is a process that subscribes to a task type on the broker, polling for available jobs of that task type. When jobs of that task type are available, the broker streams them to the worker in response to its polling request. The workflow's job handler is invoked for each available job.
 
-The method `ZBClient.createWorker` creates a new worker. It takes an optional worker id for tracing, a task type, and a job handler callback function. If the worker id is `null`, the library will assign a UUID. T
+The method `ZBClient.createWorker` creates a new worker. It takes an optional worker id for tracing, a task type, and a job handler callback function. If the worker id is `null`, the library will assign a UUID.
 
 Create a new file named `worker.js` (`worker.ts` for TypeScript).
 
 Edit the content like this:
 
+<!-- prettier-ignore -->
 {{< tabs >}}
-{{< tab TypeScript >}}
-{{< highlight typescript >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
 import { ZBClient } from "zeebe-node";
 
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success();
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success();
 });
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
+    {{< /highlight >}}
+  {{< /tab >}}
+  {{< tab "JavaScript (ES6)">}}
+    {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success();
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success();
 });
-{{< /highlight >}}
-{{< /tab >}}
+    {{< /highlight >}}
+  {{< /tab >}}
 {{< /tabs >}}
+
+When you run this, the worker polls the broker for jobs of type 'sample-task', and gets the job from the workflow you created in a previous step. 
