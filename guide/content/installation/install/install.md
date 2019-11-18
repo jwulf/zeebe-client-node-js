@@ -28,3 +28,14 @@ npm i zeebe-node
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+## Make it a TypeScript project
+
+{{< tabs >}}
+{{< tab Bash >}}
+{{< highlight bash >}}
+npm i -g typescript
+tsc --init
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}

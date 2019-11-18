@@ -38,15 +38,15 @@ const { ZBClient } = require('zeebe-node')
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient()
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
-    {{< /highlight >}}
-  {{< /tab >}}
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 This establishes a connection to a Zeebe broker running on `localhost:26500`. This is the default when no arguments are passed to the constructor and no environment variables are set.
@@ -70,21 +70,21 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 zbc.topology()
-  .catch(console.error)
-  .then(res => console.log(JSON.stringify(res, null, 2)))
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+.catch(console.error)
+.then(res => console.log(JSON.stringify(res, null, 2)))
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 zbc.topology()
-  .catch(console.error)
-  .then(res => console.log(JSON.stringify(res, null, 2)))
-    {{< /highlight >}}
-  {{< /tab >}}
+.catch(console.error)
+.then(res => console.log(JSON.stringify(res, null, 2)))
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 For the rest of this guide, we will mostly be using the async/await approach to Promise handling in examples.
@@ -100,35 +100,35 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    const res = await zbc.topology()
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+const res = await zbc.topology()
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    const res = await zbc.topology()
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+const res = await zbc.topology()
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 You can use either style in your code.
@@ -141,9 +141,14 @@ If the broker is running and accessible, you will see something like the followi
 {
   "brokers": [
     {
-      "partitions": [],
+      "partitions": [
+        {
+          "partitionId": 1,
+          "role": "LEADER"
+        }
+      ],
       "nodeId": 0,
-      "host": "172.26.0.2",
+      "host": "172.24.0.2",
       "port": 26501
     }
   ],
@@ -236,35 +241,35 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    const res = await zbc.deployWorkflow('./sample.bpmn')
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+const res = await zbc.deployWorkflow('./sample.bpmn')
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    const res = await zbc.deployWorkflow('./sample.bpmn')
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+const res = await zbc.deployWorkflow('./sample.bpmn')
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 ## Output: Deploy a Workflow
@@ -302,37 +307,37 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstance('sample-process', {});
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+await zbc.deployWorkflow('./sample.bpmn')
+const res = await zbc.createWorkflowInstance('sample-process', {});
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient()
 
 async function main() {
-  try {
-    await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstance('sample-process', {});
-    console.log(JSON.stringify(res, null, 2))
-  } catch (e) {
-    console.error(e)
-  }
+try {
+await zbc.deployWorkflow('./sample.bpmn')
+const res = await zbc.createWorkflowInstance('sample-process', {});
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
 }
 
 main()
-    {{< /highlight >}}
-  {{< /tab >}}
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 ## Output: Create a Workflow Instance
@@ -369,25 +374,192 @@ import { ZBClient } from "zeebe-node";
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success();
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success();
 });
-    {{< /highlight >}}
-  {{< /tab >}}
-  {{< tab "JavaScript (ES6)">}}
-    {{< highlight javaScript >}}
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success();
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success();
 });
-    {{< /highlight >}}
-  {{< /tab >}}
+{{< /highlight >}}
+{{< /tab >}}
 {{< /tabs >}}
 
-When you run this, the worker polls the broker for jobs of type 'sample-task', and gets the job from the workflow you created in a previous step. 
+When you run this, the worker polls the broker for jobs of type 'sample-task', and gets the job from the workflow you created in a previous step.
+
+## Output: Create a Worker
+
+You will see output similar to the following:
+
+```
+{
+  "key": "2251799813686445",
+  "type": "sample-task",
+  "workflowInstanceKey": "2251799813686440",
+  "bpmnProcessId": "sample-process",
+  "workflowDefinitionVersion": 1,
+  "workflowKey": "2251799813686430",
+  "elementId": "ServiceTask_1aj1tsb",
+  "elementInstanceKey": "2251799813686444",
+  "customHeaders": {},
+  "worker": "559fe180-c860-44ba-a6c5-8d32d6b9e026",
+  "retries": 3,
+  "deadline": "1574076501831",
+  "variables": {}
+}
+```
+
+This is the job object that is received by the worker. Your worker can perform any side-effects and any calculations it needs to, and post any updates to the job variables.
+
+Your worker is sitting there polling for more work, so you can experiment with starting more workflows. Hit Ctrl-C to kill the worker when you are ready to move on.
+
+## Update the job
+
+This next step requires 0.22.0-alpha1 or later of the broker, and v0.22.0-alpha.1 or later of the Node client. We are going to use the `createWorkflowInstanceWithResult()` method of the client to await the outcome of the workflow. This method was introduced with that version and does not work in earlier versions.
+
+First, modify your worker like this:
+
+<!-- prettier-ignore -->
+{{< tabs >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
+import { ZBClient } from "zeebe-node";
+
+const zbc = new ZBClient();
+
+zbc.createWorker(null, "sample-task", (job, complete) => {
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success({
+updateId: 'some-uuid'
+});
+});
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
+const { ZBClient } = require('zeebe-node')
+
+const zbc = new ZBClient();
+
+zbc.createWorker(null, "sample-task", (job, complete) => {
+console.log(JSON.stringify(job, null, 2));
+// Business logic
+complete.success({
+updateId: 'some-uuid'
+});
+});
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+Here, we update the workflow variables from the worker. This update will be merged with the other variables in the workflow and will be the job variables that workers servicing tasks later in the process receive. There is only one task in our sample workflow, so we will use a method call that starts a workflow and awaits the result to inspect the variable state after our worker does its thing.
+
+Start the worker now, and modify `index.js|ts` to be this:
+
+<!-- prettier-ignore -->
+{{< tabs >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
+import { ZBClient } from 'zeebe-node'
+
+const zbc = new ZBClient()
+
+async function main() {
+try {
+await zbc.deployWorkflow('./sample.bpmn')
+const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
+requestId: 'someRequestId'
+});
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
+}
+
+main()
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
+const { ZBClient } = require('zeebe-node')
+
+const zbc = new ZBClient()
+
+async function main() {
+try {
+await zbc.deployWorkflow('./sample.bpmn')
+const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
+requestId: 'someRequestId'
+});
+console.log(JSON.stringify(res, null, 2))
+} catch (e) {
+console.error(e)
+}
+}
+
+main()
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+## Output: Update the job
+
+You will see output similar to the following in the worker:
+
+```
+{
+  "key": "2251799813686671",
+  "type": "sample-task",
+  "workflowInstanceKey": "2251799813686665",
+  "bpmnProcessId": "sample-process",
+  "workflowDefinitionVersion": 1,
+  "workflowKey": "2251799813686430",
+  "elementId": "ServiceTask_1aj1tsb",
+  "elementInstanceKey": "2251799813686670",
+  "customHeaders": {},
+  "worker": "819f09a4-7fde-4782-808d-9ed86c8ee363",
+  "retries": 3,
+  "deadline": "1574079338555",
+  "variables": {
+    "requestId": "someRequestId"
+  }
+}
+```
+
+We created the workflow instance with variable `requestId` set to `someRequestId`, and you can see that your worker receives this in the job variables.
+
+When the worker completes the job, it sends back an update: it sets `updateId` to `some-uuid`. In your process that creates and awaits the workflow, you will see something similar to the following:
+
+```
+{
+  "workflowKey": "2251799813686430",
+  "bpmnProcessId": "sample-process",
+  "version": 1,
+  "workflowInstanceKey": "2251799813686665",
+  "variables": {
+    "updateId": "some-uuid",
+    "requestId": "someRequestId"
+  }
+}
+```
+
+The workflow variables were updated.
+
+## Summary
+
+In this Quickstart you deployed a workflow, created instances of that workflow, created a worker to service the single task in the workflow, updated job variables, and awaited a workflow's outcome.
+
+This is 80% of what you'll be doing with the Zeebe Node client in your application.
+
+The rest of this guide goes into more depth on each of these aspects, and also covers the other methods that are available.
