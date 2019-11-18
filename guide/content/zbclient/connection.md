@@ -103,3 +103,5 @@ ZEEBE_ADDRESS=zeebe.test.mydomain.com:80 node index.js
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+## Connect to Camunda Cloud
