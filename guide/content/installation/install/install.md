@@ -7,35 +7,22 @@ The Zeebe Node client is available via [npm](https://www.npmjs.com/package/zeebe
 
 ## Add to an existing project
 
-{{< tabs >}}
-{{< tab Bash >}}
-{{< highlight bash >}}
+```bash
 npm i zeebe-node
-{{< /highlight >}}
-{{< /tab >}}
-
-{{< /tabs >}}
+```
 
 ## Create a new Node.js project
 
-{{< tabs >}}
-{{< tab Bash >}}
-{{< highlight bash >}}
+```bash
 mkdir myproject
 cd myproject
 npm init -y
 npm i zeebe-node
-{{< /highlight >}}
-{{< /tab >}}
-{{< /tabs >}}
+```
 
 ## Make it a TypeScript project
 
-{{< tabs >}}
-{{< tab Bash >}}
-{{< highlight bash >}}
+```bash
 npm i -g typescript
 tsc --init
-{{< /highlight >}}
-{{< /tab >}}
-{{< /tabs >}}
+```

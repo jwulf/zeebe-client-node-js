@@ -70,8 +70,8 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 zbc.topology()
-.catch(console.error)
-.then(res => console.log(JSON.stringify(res, null, 2)))
+  .catch(console.error)
+  .then(res => console.log(JSON.stringify(res, null, 2)))
 {{< /highlight >}}
 {{< /tab >}}
 {{< tab "JavaScript (ES6)">}}
@@ -81,8 +81,8 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient()
 
 zbc.topology()
-.catch(console.error)
-.then(res => console.log(JSON.stringify(res, null, 2)))
+  .catch(console.error)
+  .then(res => console.log(JSON.stringify(res, null, 2)))
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -100,12 +100,12 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.topology()
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.topology()
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -118,12 +118,12 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.topology()
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.topology()
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -241,12 +241,12 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.deployWorkflow('./sample.bpmn')
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.deployWorkflow('./sample.bpmn')
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -259,12 +259,12 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient()
 
 async function main() {
-try {
-const res = await zbc.deployWorkflow('./sample.bpmn')
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    const res = await zbc.deployWorkflow('./sample.bpmn')
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -307,13 +307,13 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstance('sample-process', {});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstance('sample-process', {});
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -326,13 +326,13 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstance('sample-process', {});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstance('sample-process', {});
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -374,9 +374,9 @@ import { ZBClient } from "zeebe-node";
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success();
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success();
 });
 {{< /highlight >}}
 {{< /tab >}}
@@ -387,9 +387,9 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success();
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success();
 });
 {{< /highlight >}}
 {{< /tab >}}
@@ -438,11 +438,11 @@ import { ZBClient } from "zeebe-node";
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success({
-updateId: 'some-uuid'
-});
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success({
+    updateId: 'some-uuid'
+  });
 });
 {{< /highlight >}}
 {{< /tab >}}
@@ -453,11 +453,11 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient();
 
 zbc.createWorker(null, "sample-task", (job, complete) => {
-console.log(JSON.stringify(job, null, 2));
-// Business logic
-complete.success({
-updateId: 'some-uuid'
-});
+  console.log(JSON.stringify(job, null, 2));
+  // Business logic
+  complete.success({
+    updateId: 'some-uuid'
+  });
 });
 {{< /highlight >}}
 {{< /tab >}}
@@ -476,15 +476,15 @@ import { ZBClient } from 'zeebe-node'
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
-requestId: 'someRequestId'
-});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
+      requestId: 'someRequestId'
+    });
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()
@@ -497,15 +497,15 @@ const { ZBClient } = require('zeebe-node')
 const zbc = new ZBClient()
 
 async function main() {
-try {
-await zbc.deployWorkflow('./sample.bpmn')
-const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
-requestId: 'someRequestId'
-});
-console.log(JSON.stringify(res, null, 2))
-} catch (e) {
-console.error(e)
-}
+  try {
+    await zbc.deployWorkflow('./sample.bpmn')
+    const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
+      requestId: 'someRequestId'
+    });
+    console.log(JSON.stringify(res, null, 2))
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 main()

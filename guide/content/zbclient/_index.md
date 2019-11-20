@@ -10,4 +10,4 @@ pre = "<b>3. </b>"
 
 # ZBClient
 
-Using the ZBClient to interact with a Zeebe broker.
+The ZBClient class.
