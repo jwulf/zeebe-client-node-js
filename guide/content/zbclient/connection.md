@@ -6,13 +6,13 @@ draft: false
 
 ## Zero-conf constructor vs configuration in code
 
-You can provide configuration to the ZBClient explicitly in your code - via the constructor - or via environment variables. 
+You can provide configuration to the ZBClient explicitly in your code - via the constructor - or via environment variables.
 
 Explicit configuration in code is quick and easy, and makes sense when you are first experimenting with Zeebe.
 
 We recommend, however, that ultimately you use the zero-conf constructor, and provide all the configuration via environment variables, `docker-compose.yml`, or a K8s config map. This environmentalizes your configuration, making your code portable. When you deploy your application to a test, staging, or production environment, no changes are required in your code.
 
-Note that any explicit configuration in code overrides configuration from the environment - with one exception: the log level can be overridden from the environment. 
+Note that any explicit configuration in code overrides configuration from the environment - with one exception: the log level can be overridden from the environment.
 
 ## Broker Gateway address
 
@@ -38,7 +38,6 @@ const zbc = new ZBClient()
 {{< /tab >}}
 {{< /tabs >}}
 
-
 In the absence of any other arguments or environment variables, the ZBClient will communicate with a gateway at 127.0.0.1 on port 26500.
 
 You can explicitly provide an address to the constructor if you want. The following examples are functionally equivalent:
@@ -62,8 +61,8 @@ const zbc3 = new ZBClient('localhost:26500')
 
 // Use configuration object
 const zbc4 = new ZBClient({
-  hostname: 'localhost',
-  port: 26500
+hostname: 'localhost',
+port: 26500
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -84,8 +83,8 @@ const zbc3 = new ZBClient('localhost:26500')
 
 // Use configuration object
 const zbc4 = new ZBClient({
-  hostname: 'localhost',
-  port: 26500
+hostname: 'localhost',
+port: 26500
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -129,7 +128,7 @@ ZEEBE_ADDRESS=zeebe.test.mydomain.com:80 node index.js
 
 ## Connect to a broker with TLS
 
-You can secure communication between your client applications and the Zeebe broker cluster using [TLS (Transport Layer Security)](https://en.wikipedia.org/wiki/Transport_Layer_Security). This needs to be enabled in the broker, or in an intermediate proxy to use. 
+You can secure communication between your client applications and the Zeebe broker cluster using [TLS (Transport Layer Security)](https://en.wikipedia.org/wiki/Transport_Layer_Security). This needs to be enabled in the broker, or in an intermediate proxy to use.
 
 By default, the broker does not secure the client connections with TLS, and the Node client does not use TLS for the connection.
 
@@ -143,12 +142,12 @@ import { ZBClient } from 'zeebe-node'
 
 // With the default, or a gateway address from the environment
 const zbc = new ZBClient({
-  useTLS: true
+useTLS: true
 })
 
 // With a gateway address provided in the code
 const zbc = new ZBClient(gatewayAddress, {
-  useTLS: true
+useTLS: true
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -158,23 +157,23 @@ const { ZBClient } = require('zeebe-node')
 
 // With the default, or a gateway address from the environment
 const zbc = new ZBClient({
-  useTLS: true
+useTLS: true
 })
 
 // With a gateway address provided in the code
 const zbc = new ZBClient(gatewayAddress, {
-  useTLS: true
+useTLS: true
 })
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-### Environmentalizing TLS 
+### Environmentalizing TLS
 
-To enable TLS with the Node client and connect to a broker secured with TLS, set the environment variable `ZEEBE_INSECURE_CONNECTION`:
+To enable TLS with the Node client and connect to a broker secured with TLS, set the environment variable `ZEEBE_SECURE_CONNECTION`:
 
 ```bash
-ZEEBE_INSECURE_CONNECTION=false
+ZEEBE_SECURE_CONNECTION=true
 ```
 
 ## Connect to a broker with OAuth
@@ -192,14 +191,14 @@ In the following example, we enable OAuth:
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient({
-  oAuth: {
-    url: 'my-oAuth-endpoint.com',
-    audience: 'token-audience',
-    clientId: 'oAuth-client-id',
-    clientSecret: 'oAuth-client-secret',
-  },
-  hostname: 'my-secure-zeebe-gateway.com',
-  port: 443
+oAuth: {
+url: 'my-oAuth-endpoint.com',
+audience: 'token-audience',
+clientId: 'oAuth-client-id',
+clientSecret: 'oAuth-client-secret',
+},
+hostname: 'my-secure-zeebe-gateway.com',
+port: 443
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -208,14 +207,14 @@ const zbc = new ZBClient({
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient({
-  oAuth: {
-    url: 'my-oAuth-endpoint.com',
-    audience: 'token-audience',
-    clientId: 'oAuth-client-id',
-    clientSecret: 'oAuth-client-secret',
-  },
-  hostname: 'my-secure-zeebe-gateway.com',
-  port: 443
+oAuth: {
+url: 'my-oAuth-endpoint.com',
+audience: 'token-audience',
+clientId: 'oAuth-client-id',
+clientSecret: 'oAuth-client-secret',
+},
+hostname: 'my-secure-zeebe-gateway.com',
+port: 443
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -238,7 +237,7 @@ The Node client caches the JWT in-memory, and only requests a new token when the
 
 It also caches the token on disk. This is important in development when you are restarting your application frequently, and also when running in a stateless environment like AWS Lambda.
 
-By default, the JWT is cached in the directory `~/.camunda`. In some environments (such as AWS Lambda) this directory is not writable. To avoid unbounded token requests, the ZBClient will throw in its constructor if it cannot write to the token cache directory. 
+By default, the JWT is cached in the directory `~/.camunda`. In some environments (such as AWS Lambda) this directory is not writable. To avoid unbounded token requests, the ZBClient will throw in its constructor if it cannot write to the token cache directory.
 
 You can configure a token cache directory in the oAuth configuration using the optional `cacheDir` parameter, like this:
 
@@ -249,16 +248,16 @@ You can configure a token cache directory in the oAuth configuration using the o
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient({
-  useTLS: true,
-  oAuth: {
-    url: 'my-oAuth-endpoint.com',
-    audience: 'token-audience',
-    clientId: 'oAuth-client-id',
-    clientSecret: 'oAuth-client-secret',
-    cacheDir: '/cache'
-  },
-  hostname: 'my-secure-zeebe-gateway.com',
-  port: 443
+useTLS: true,
+oAuth: {
+url: 'my-oAuth-endpoint.com',
+audience: 'token-audience',
+clientId: 'oAuth-client-id',
+clientSecret: 'oAuth-client-secret',
+cacheDir: '/cache'
+},
+hostname: 'my-secure-zeebe-gateway.com',
+port: 443
 })
 {{< /highlight >}}
 {{< /tab >}}
@@ -267,22 +266,22 @@ const zbc = new ZBClient({
 const { ZBClient } = require('zeebe-node')
 
 const zbc = new ZBClient({
-  useTLS: true,
-  oAuth: {
-    url: 'my-oAuth-endpoint.com',
-    audience: 'token-audience',
-    clientId: 'oAuth-client-id',
-    clientSecret: 'oAuth-client-secret',
-    cacheDir: '/cache'
-  },
-  hostname: 'my-secure-zeebe-gateway.com',
-  port: 443
+useTLS: true,
+oAuth: {
+url: 'my-oAuth-endpoint.com',
+audience: 'token-audience',
+clientId: 'oAuth-client-id',
+clientSecret: 'oAuth-client-secret',
+cacheDir: '/cache'
+},
+hostname: 'my-secure-zeebe-gateway.com',
+port: 443
 })
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-### Environmentalizing JWT cache 
+### Environmentalizing JWT cache
 
 The following environment variable overrides the JWT cache directory:
 
@@ -298,14 +297,6 @@ Camunda Cloud is a fully managed Zeebe service with TLS and OAuth. You can confi
 
 To use with Camunda Cloud, set the environment variables:
 
-```bash
-ZEEBE_ADDRESS  # Set with "Zeebe Contactpoint" value
-ZEEBE_CLIENT_ID # Set with "clientId" value
-ZEEBE_CLIENT_SECRET # Set with "clientSecret" value
-```
-
-Setting these three values will enable TLS and correctly set the OAuth token audience and Authorization URL.
-
 You can also set these values in code:
 
 <!-- prettier-ignore -->
@@ -315,12 +306,11 @@ You can also set these values in code:
 import { ZBClient } from 'zeebe-node'
 
 const zbc = new ZBClient({
-  camundaCloud: {
-    clusterId: string
-    clientId: string
-    clientSecret: string
-    cacheOnDisk?: boolean
-  }
+camundaCloud: {
+clusterId: string
+clientId: string
+clientSecret: string
+}
 })
 
 {{< /highlight >}}
@@ -331,19 +321,27 @@ const { ZBClient } = require('zeebe-node')
 
 // With a gateway address address from the environment
 const zbc = new ZBClient({
-  useTLS: true
+useTLS: true
 })
 
 // With a gateway address provided in the code
 const zbc = new ZBClient(gatewayAddress, {
-  useTLS: true
+useTLS: true
 })
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
 
+### Environmentalizing Camunda Cloud
+
+```bash
+ZEEBE_ADDRESS  # Set with "Zeebe Contactpoint" value
+ZEEBE_CLIENT_ID # Set with "clientId" value
+ZEEBE_CLIENT_SECRET # Set with "clientSecret" value
+```
+
+Setting only these three OAuth values is interpreted by the client as necessary and sufficient for Camunda Cloud, and it will enable TLS and correctly set the OAuth token audience and Authorization URL.
+
 ### Client version prior to 0.22
 
 The OAuth authorization endpoint changed in November 2019. Client versions prior to 0.22 are hard-coded to use the previous authorization endpoint, so the convenience configuration will not work. You will need to provide all the configuration details:
-
-
