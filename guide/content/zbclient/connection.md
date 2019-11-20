@@ -62,7 +62,7 @@ We recommend, however, that you use the zero-conf constructor, with no gateway a
 
 ## Environmentalizing the connection
 
-The ZBClient constructor examines the environment for the variable `ZEEBE_ADDRESS`. By setting this variable in your various environments (for example via `docker-compose.yml` or a K8s config map), and using the zero-conf constructor, your code is portable.
+The ZBClient constructor examines the environment for the variable `ZEEBE_ADDRESS`. By setting this variable in your various environments (for example via an environment variable, `docker-compose.yml` or a K8s config map), and using the zero-conf constructor, your code is portable.
 
 For example, given an `index.js|ts` file like this:
 
@@ -105,3 +105,5 @@ ZEEBE_ADDRESS=zeebe.test.mydomain.com:80 node index.js
 {{< /tabs >}}
 
 ## Connect to Camunda Cloud
+
+Camunda Cloud is a fully managed Zeebe service with TLS and OAuth. You can configure each of these - TLS and OAuth - individually, and you should refer to later sections if you want do that. However, the Zeebe Node client provides a convenience configuration method that handles a bunch of configuration for Camunda Cloud.
