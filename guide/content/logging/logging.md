@@ -11,21 +11,21 @@ The Node client logs its messages using a structured JSON format - [ndjson](http
 The messages are output to the console by default, and look like this:
 
 ```
-{"timestamp":"2019-11-21T11:37:37.939Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441","level":50,"message":"14 UNAVAILABLE: failed to connect to all addresses","time":"2019 Nov-21 21:37:37PM","pollInterval":30000,"namespace":"ZBClient"}
-{"timestamp":"2019-11-21T11:37:37.940Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433","level":50,"message":"gRPC connection is in failed state. Attempt 2. Retrying in 5s...","time":"2019 Nov-21 21:37:37PM","pollInterval":30000,"namespace":"ZBClient"}
+{"timestamp":"2019-11-21T13:52:00.961Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433","level":50,"message":"[topology]: Attempt 5 (max: 50).","time":"2019 Nov-21 23:52:00PM","pollInterval":30000,"namespace":"ZBClient"}
+{"timestamp":"2019-11-21T13:52:00.962Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441","level":50,"message":"[topology]: 14 UNAVAILABLE: failed to connect to all addresses","time":"2019 Nov-21 23:52:00PM","pollInterval":30000,"namespace":"ZBClient"}
 ```
 
 To view log messages in a human-readable format, you can pipe your program's output through [`pino-pretty`](https://www.npmjs.com/package/pino-pretty). This results in output like this:
 
 ```
-[2019 Nov-21 21:38:22PM] ERROR:
-    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441"
-    message: "14 UNAVAILABLE: failed to connect to all addresses"
+[2019 Nov-21 23:52:54PM] ERROR:
+    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433"
+    message: "[topology]: Attempt 5 (max: 50)."
     pollInterval: 30000
     namespace: "ZBClient"
-[2019 Nov-21 21:38:23PM] ERROR:
-    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433"
-    message: "gRPC connection is in failed state. Attempt 2. Retrying in 5s..."
+[2019 Nov-21 23:52:54PM] ERROR:
+    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441"
+    message: "[topology]: 14 UNAVAILABLE: failed to connect to all addresses"
     pollInterval: 30000
     namespace: "ZBClient"
 ```
