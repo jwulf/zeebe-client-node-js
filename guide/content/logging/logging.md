@@ -149,3 +149,43 @@ const zbc = new ZBClient({
 {{< /tabs >}}
 
 For an example of a custom logger, see the implementation in the [Node-RED Zeebe package](https://github.com/pedesen/node-red-contrib-zeebe/blob/master/src/util/logger.js).
+
+## Logging in ZBWorker
+
+The ZBWorker inherits its log settings from the ZBClient that creates it. You can also override any of the settings in the `createWorker` method call. 
+
+By default the ZBWorker logs with the namespace "ZBWorker". If a custom namespace has been set for the ZBClient, the ZBWorker inherits it and prepends "ZBWorker" to it. If you override this with an explicit namespace, "ZBWorker" is prepended to that.
+
+<!-- prettier-ignore -->
+{{< tabs >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
+import { ZBClient } from 'zeebe-node'
+import { jobhandler } from './jobhandler'
+
+const zbc = new ZBClient({
+  logNamespace: 'Main ZBClient',
+})
+
+// Logs with namespace "ZBWorker override-namespace"
+const worker = zbc.createWorker(null, 'get-user', jobhandler, {
+  logNamespace: 'override-namespace'
+})
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
+const { ZBClient } = require('zeebe-node')
+const { jobhandler } = require('./jobhandler')
+
+const zbc = new ZBClient({
+  logNamespace: 'Main ZBClient',
+})
+
+// Logs with namespace "ZBWorker override-namespace"
+const worker = zbc.createWorker(null, 'get-user', jobhandler, {
+  logNamespace: 'override-namespace'
+})
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}
