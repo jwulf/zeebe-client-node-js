@@ -10,22 +10,26 @@ The ZBLogger class is available for you to use for logging in your application.
 {{< tabs >}}
   {{< tab TypeScript >}}
     {{< highlight typescript >}}
-import { ZBClient } from 'zeebe-node'
+import { ZBLogger } from 'zeebe-node'
 
-// Suppress all log messages except errors
-const zbc = new ZBClient({
-  loglevel: 'ERROR'
+const logger = new ZBLogger({
+	loglevel: 'INFO',
+	namespace: 'my-application-context',
 })
+
+logger.info('Starting...')
 {{< /highlight >}}
 {{< /tab >}}
 {{< tab "JavaScript (ES6)">}}
 {{< highlight javaScript >}}
-const { ZBClient } = require('zeebe-node')
+const { ZBLogger } = require('zeebe-node')
 
-// Suppress all log messages except errors
-const zbc = new ZBClient({
-  loglevel: 'ERROR'
+const logger = new ZBLogger({
+	loglevel: 'INFO',
+	namespace: 'my-application-context',
 })
+
+logger.info('Starting...')
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}

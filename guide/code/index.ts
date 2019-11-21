@@ -1,7 +1,13 @@
-import { ZBClient } from '../../src'
+import { ZBClient, ZBLogger } from '../../src'
 
 const zbc = new ZBClient()
 
+const logger = new ZBLogger({
+	loglevel: 'INFO',
+	namespace: 'my-application',
+})
+
+logger.info('Starting...')
 async function main() {
 	try {
 		// const res = await zbc.deployWorkflow('./sample.bpmn')

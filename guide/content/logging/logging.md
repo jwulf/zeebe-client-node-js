@@ -147,3 +147,5 @@ const zbc = new ZBClient({
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+For an example of a custom logger, see the implementation in the [Node-RED Zeebe package](https://github.com/pedesen/node-red-contrib-zeebe/blob/master/src/util/logger.js).
