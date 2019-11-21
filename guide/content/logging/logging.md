@@ -11,23 +11,23 @@ The Node client logs its messages using a structured JSON format - [ndjson](http
 The messages are output to the console by default, and look like this:
 
 ```
-{"context":"/Users/sitapati/workspace/tmp/myproject/node_modules/zeebe-node/dist/zb/ZBClient.js:382","level":50,"message":"14 UNAVAILABLE: failed to connect to all addresses","pollMode":"","taskType":"ZBClient","time":"2019 Nov-11 22:39:32PM","timestamp":"2019-11-11T12:39:32.155Z"}
-{"context":"/Users/sitapati/workspace/tmp/myproject/node_modules/zeebe-node/dist/zb/ZBClient.js:374","level":50,"message":"gRPC connection is in failed state. Attempt 5. Retrying in 5s...","pollMode":"","taskType":"ZBClient","time":"2019 Nov-11 22:39:37PM","timestamp":"2019-11-11T12:39:37.159Z"}
+{"timestamp":"2019-11-21T11:37:37.939Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441","level":50,"message":"14 UNAVAILABLE: failed to connect to all addresses","time":"2019 Nov-21 21:37:37PM","pollInterval":30000,"namespace":"ZBClient"}
+{"timestamp":"2019-11-21T11:37:37.940Z","context":"/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433","level":50,"message":"gRPC connection is in failed state. Attempt 2. Retrying in 5s...","time":"2019 Nov-21 21:37:37PM","pollInterval":30000,"namespace":"ZBClient"}
 ```
 
 To view log messages in a human-readable format, you can pipe your program's output through [`pino-pretty`](https://www.npmjs.com/package/pino-pretty). This results in output like this:
 
 ```
-[2019 Nov-11 23:43:48PM] ERROR:
-    context: "/Users/sitapati/workspace/tmp/myproject/node_modules/zeebe-node/dist/zb/ZBClient.js:382"
+[2019 Nov-21 21:38:22PM] ERROR:
+    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:441"
     message: "14 UNAVAILABLE: failed to connect to all addresses"
-    pollMode: ""
-    taskType: "ZBClient"
-[2019 Nov-11 23:43:53PM] ERROR:
-    context: "/Users/sitapati/workspace/tmp/myproject/node_modules/zeebe-node/dist/zb/ZBClient.js:374"
-    message: "gRPC connection is in failed state. Attempt 10. Retrying in 5s..."
-    pollMode: ""
-    taskType: "ZBClient"
+    pollInterval: 30000
+    namespace: "ZBClient"
+[2019 Nov-21 21:38:23PM] ERROR:
+    context: "/Users/sitapati/workspace/Camunda/zeebe-client-node-js/src/zb/ZBClient.ts:433"
+    message: "gRPC connection is in failed state. Attempt 2. Retrying in 5s..."
+    pollInterval: 30000
+    namespace: "ZBClient"
 ```
 
 ## Log message levels
@@ -77,6 +77,40 @@ ZEEBE_NODE_LOG_LEVEL
 ```
 
 Any environment setting will override the constructor setting. This is the only setting with this precedence.
+
+## Set a custom log namespace
+
+By default, the ZBClient logs with namespace "ZBClient". If you have more than one ZBClient instance in your application, you can distinguish between them by setting a custom log namespace. Pass a string or array of strings to the ZBClient constructor as the `logNamespace` parameter.
+
+<!-- prettier-ignore -->
+{{< tabs >}}
+  {{< tab TypeScript >}}
+    {{< highlight typescript >}}
+import { ZBClient } from 'zeebe-node'
+
+const zbc = new ZBClient({
+  logNamespace: 'zbc'
+})
+
+const zbc1 = new ZBClient({
+  logNamespace: 'zbc1'
+})
+{{< /highlight >}}
+{{< /tab >}}
+{{< tab "JavaScript (ES6)">}}
+{{< highlight javaScript >}}
+const { ZBClient } = require('zeebe-node')
+
+const zbc = new ZBClient({
+  logNamespace: 'zbc'
+})
+
+const zbc1 = new ZBClient({
+  logNamespace: 'zbc1'
+})
+{{< /highlight >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Log to a custom stdout
 
