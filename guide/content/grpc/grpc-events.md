@@ -58,7 +58,7 @@ This means that you can do things like attach [one-time listeners](https://nodej
 
 When the gRPC connection fails, as the gRPC channel tries to reconnect, it rapidly cycles between connected / disconnected before settling on disconnected. To avoid calling the onReady and onConnectionError callbacks rapidly in multiple succession and emitting a stream of events, the client debounces the channel status transitions, and requires the channel to be in the new state for 3 seconds before calling it.
 
-The window of three seconds is based on observation of production systems. You might find that you need a different window for connection tolerance, in which case you can pass in another value for `connectionTolerance` in the ZBClient constructor:
+The default window of three seconds is based on observation of production systems using specific proxies. You might find that you need a different window for connection tolerance, in which case you can pass in another value for `connectionTolerance` in the ZBClient constructor:
 
 <!-- prettier-ignore -->
 {{< tabs >}}

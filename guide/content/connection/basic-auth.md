@@ -4,6 +4,8 @@ date: 2019-10-27T17:01:15+10:00
 draft: false
 ---
 
+## Connect to a broker with Basic Auth 
+
 You can secure a Zeebe cluster with Basic Auth using an reverse proxy. In this case you can use a username / password pair as effectively an API key for your client applications.
 
 ## Basic Auth without TLS
