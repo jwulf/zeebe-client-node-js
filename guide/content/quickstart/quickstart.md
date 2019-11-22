@@ -4,6 +4,10 @@ date: 2019-10-28T16:59:15+10:00
 draft: false
 ---
 
+## What you will do in this Quickstart
+
+In this Quickstart you will establish a connection to a Zeebe broker cluster, deploy a workflow definition, create instances of that workflow, create a worker to service a task in the workflow, update the workflow variables via a worker, and await a workflow's outcome.
+
 ## Prerequisites
 
 -   Node.js / npm
@@ -171,7 +175,7 @@ If the broker is not started, or is not accessible to your client, you will see 
 
 These are due to the Zeebe Node client's built-in backoff-retry logic for network-related errors. The client automatically retries to establish the connection until it connects, or retries are exhausted.
 
-You can disable automatic retries if you want network errors to bubble up immediately to your code, and write your own logic to handle them. See the later section on the ZBClient for more details.
+You can disable automatic retries if you want network errors to bubble up immediately to your code, and write your own logic to handle them. See the later section on gRPC configuration for more details.
 
 ## Logs
 
@@ -214,13 +218,13 @@ Log messages will now be formatted for your viewing pleasure:
     namespace: "ZBClient"
 ```
 
-## Deploy a Workflow
+## Deploy a Workflow Definition
 
-The next task is to deploy a workflow to the broker.
+The next task is to deploy a workflow definition to the broker.
 
 The method `ZBClient.deployWorkflow()` takes a path to a .bpmn file, and deploys that BPMN file to the broker, returning a Promise of a broker response - a `DeployWorkflowResponse`.
 
-Here is the sample workflow that we will be using:
+Here is the sample workflow definition that we will be using:
 
 <img src="/img/sample-workflow.png"/>
 
@@ -272,7 +276,7 @@ main()
 {{< /tab >}}
 {{< /tabs >}}
 
-## Output: Deploy a Workflow
+## Output: Deploy a Workflow Definition
 
 You will see output similar to the following:
 
@@ -558,7 +562,7 @@ The workflow variables were updated.
 
 ## Summary
 
-In this Quickstart you deployed a workflow, created instances of that workflow, created a worker to service the single task in the workflow, updated job variables, and awaited a workflow's outcome.
+In this Quickstart you deployed a workflow definition, created instances of that workflow, created a worker to service the single task in the workflow, updated job variables, and awaited a workflow's outcome.
 
 This is 80% of what you'll be doing with the Zeebe Node client in your application.
 
