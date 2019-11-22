@@ -175,7 +175,7 @@ If the broker is not started, or is not accessible to your client, you will see 
 
 These are due to the Zeebe Node client's built-in backoff-retry logic for network-related errors. The client automatically retries to establish the connection until it connects, or retries are exhausted.
 
-You can disable automatic retries if you want network errors to bubble up immediately to your code, and write your own logic to handle them. See the later section on gRPC configuration for more details.
+You can disable automatic retries if you want network errors to bubble up immediately to your code, and write your own logic to handle them. See the <a href="/grpc">gRPC Configuration</a> chapter for more details.
 
 ## Logs
 
