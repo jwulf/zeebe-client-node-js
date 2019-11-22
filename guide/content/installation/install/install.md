@@ -26,3 +26,19 @@ npm i zeebe-node
 npm i -g typescript
 tsc --init
 ```
+
+## zbctl
+
+The `zbctl` binary is a command-line client that you use to send commands to a Zeebe broker cluster.
+
+To install `zbctl`:
+
+```bash
+npm i -g zbctl
+```
+
+After installation, you can run `zbctl` and see the available options with:
+
+```bash
+zbctl
+```
