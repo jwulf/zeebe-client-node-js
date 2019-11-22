@@ -67,7 +67,7 @@ The Node client also caches the token on disk. This is important in development 
 
 By default, the JWT is cached in the directory `~/.camunda`. In some environments (such as AWS Lambda) this directory is not writable. To avoid unbounded token requests, the ZBClient will throw in its constructor if it cannot write to the token cache directory.
 
-You can configure a token cache directory in the oAuth configuration using the optional `cacheDir` parameter, like this:
+You can configure a custom token cache directory in the oAuth configuration using the optional `cacheDir` parameter, like this:
 
 <!-- prettier-ignore -->
 {{< tabs >}}

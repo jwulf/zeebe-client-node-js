@@ -12,7 +12,7 @@ draft: false
 
 The Zeebe Node client version 0.22 and above provides a convenience that handles the TLS and some of the OAuth configuration for Camunda Cloud.
 
-To use with Camunda Cloud, set these values in code. Note that `cacheDir` is optional, and should be used when the directory `~` is not writable in your runtime environment.
+To use with Camunda Cloud, set these values in code. Note that `cacheDir` is optional, and should be used when the directory `~` is not writable in your runtime environment, to set a custom token cache directory.
 
 <!-- prettier-ignore -->
 {{< tabs >}}
