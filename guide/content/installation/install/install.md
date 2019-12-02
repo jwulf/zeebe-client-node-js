@@ -27,6 +27,12 @@ npm i -g typescript
 tsc --init
 ```
 
+## Optional: Zeebe Modeler
+
+The Zeebe Modeler is an Electron app that allows you to create, examine, and inspect BPMN files.
+
+You can download a release of the Zeebe Modeler from GitHub [here](https://github.com/zeebe-io/zeebe-modeler/releases).
+
 ## Optional: zbctl
 
 The `zbctl` binary is a command-line client that you can use to send commands to a Zeebe broker cluster. It is useful for debugging and testing.

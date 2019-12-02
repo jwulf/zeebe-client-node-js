@@ -8,10 +8,30 @@ draft: false
 
 In this Quickstart you will establish a connection to a Zeebe broker cluster, deploy a workflow definition, create instances of that workflow, create a worker to service a task in the workflow, update the workflow variables via a worker, and await a workflow's outcome.
 
+This workflow will get the current weather in London, UK, and output a recommendation to take an umbrella out with you or leave your umbrella at home.
+
 ## Prerequisites
 
 -   Node.js / npm
--   A Zeebe broker running locally (refer to the [broker documentation](https://docs.zeebe.io)).
+-   A Zeebe broker
+
+## Start a Zeebe broker
+
+### Local broker
+
+The easiest way to start a broker locally is to use Docker:
+
+```
+docker run -it -p 26500:26500 camunda/zeebe
+```
+
+For other ways to start a local Zeebe broker, refer to the [broker documentation](https://docs.zeebe.io).
+
+## Camunda Cloud
+
+If you have a Camunda Cloud account, you can run this entire Quickstart against Camunda Cloud.
+
+If you want to do that, you need to set the appropriate environment variables for your Camunda Cloud cluster. See [this section](/connection/camunda-cloud/#environmentalizing-camunda-cloud) for details.
 
 ## Import the Zeebe Node library
 
@@ -53,7 +73,9 @@ const zbc = new ZBClient()
 {{< /tab >}}
 {{< /tabs >}}
 
-This establishes a connection to a Zeebe broker running on `localhost:26500`. This is the default when no arguments are passed to the constructor and no environment variables are set.
+This establishes a connection to a Zeebe broker running on `localhost:26500` by default when no arguments are passed to the constructor, and no environment variables are set.
+
+If you set environment variables to connect to Camunda Cloud, then it will connect to your Camunda Cloud cluster.
 
 The connection is eager. This will throw if a broker connection cannot be established - although at this point, this program exits before the connection timeout is reached.
 
@@ -226,9 +248,9 @@ The method `ZBClient.deployWorkflow()` takes a path to a .bpmn file, and deploys
 
 Here is the sample workflow definition that we will be using:
 
-<img src="/img/sample-workflow.png"/>
+![](/img/sample-workflow.png)
 
-It has a single task in it.
+It has three tasks in it.
 
 Download [the sample bpmn file](https://raw.githubusercontent.com/jwulf/bpmn-sample/master/sample.bpmn) from this [bpmn-sample](https://github.com/jwulf/bpmn-sample) GitHub repository.
 
@@ -284,7 +306,7 @@ You will see output similar to the following:
 {
   "workflows": [
     {
-      "bpmnProcessId": "sample-process",
+      "bpmnProcessId": "weather-report",
       "version": 1,
       "workflowKey": "2251799813685249",
       "resourceName": "sample.bpmn"
@@ -294,13 +316,13 @@ You will see output similar to the following:
 }
 ```
 
-The workflow has been deployed to the broker, and you can now start an instance of the workflow, using its `bpmnProcessId` - "sample-process" (this is defined in the .bpmn file).
+The workflow has been deployed to the broker, and you can now start an instance of the workflow, using its `bpmnProcessId` - "weather-report" (this is defined in the .bpmn file).
 
 ## Create a Workflow Instance
 
 The method `ZBClient.createWorkflowInstance()` creates (and starts) a workflow instance. It takes a BPMN Process Id and an initial variables object, and returns a Promise of a `CreateWorkflowInstance` response.
 
-There is no problem leaving the `deployWorkflow` command in the code - the broker will not update the deployment if the file has not changed since the last deployment, and it ensures that the workflow definition we are about to start an instance of is, in fact, deployed.
+There is no problem leaving the `deployWorkflow` command in the code - the broker will not update the deployment if the file has not changed since the last deployment, and it ensures that the workflow definition we are about to start an instance of is deployed.
 
 <!-- prettier-ignore -->
 {{< tabs >}}
@@ -313,7 +335,9 @@ const zbc = new ZBClient()
 async function main() {
   try {
     await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstance('sample-process', {});
+    const res = await zbc.createWorkflowInstance('weather-report', {
+      city: "London,uk"
+    });
     console.log(JSON.stringify(res, null, 2))
   } catch (e) {
     console.error(e)
@@ -332,7 +356,9 @@ const zbc = new ZBClient()
 async function main() {
   try {
     await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstance('sample-process', {});
+    const res = await zbc.createWorkflowInstance('weather-report', {
+        city: "London,uk"
+    });
     console.log(JSON.stringify(res, null, 2))
   } catch (e) {
     console.error(e)
@@ -351,7 +377,7 @@ You will see output similar to the following:
 ```
 {
   "workflowKey": "2251799813685249",
-  "bpmnProcessId": "sample-process",
+  "bpmnProcessId": "weather-report",
   "version": 1,
   "workflowInstanceKey": "2251799813685252"
 }
@@ -365,7 +391,27 @@ A worker is a process that subscribes to a task type on the broker, polling for 
 
 The method `ZBClient.createWorker` creates a new worker. It takes an optional worker id for tracing, a task type, and a job handler callback function. If the worker id is `null`, the library will assign a UUID.
 
-Create a new file named `worker.js` (`worker.ts` for TypeScript).
+### A Note on the API Key
+
+We will be making a REST call to the [OpenWeatherMap API](https://openweathermap.org/api) to get the current weather. The API key in the example is my personal API key, and it is rate-limited to 60 calls/minute. Please don't use it in a load or through-put test. If you find that it doesn't work, you can grab your own API key for free from OpenWeatherMap.
+
+### Install Axios
+
+Install the `axios` library to your project:
+
+```
+npm i axios
+```
+
+Create a new file named `workers.js` (`workers.ts` for TypeScript).
+
+We will create three workers: one to get the current weather report, and pass it back into the workflow, along with a `weather_code` to match the table of [Weather Conditions](https://openweathermap.org/weather-conditions) from OpenWeatherMap; and one each for the decision branches.
+
+The `weather_code` will be used by the decision gate in the BPMN to determine the recommendation, which will be added to the broker variables by another worker. Of course we could do the recommendation in a single worker, but three things to note:
+
+1. This is a demonstration that shows the interaction of a number of features.
+2. Your business logic is materialised in the BPMN and can be viewed and understood by various stakeholders in the business.
+3. Refactoring the business process and changing the system behavior is possible by modifying the BPMN (you could swap out a recommender for an IOT worker that fetches your umbrella, for example, or create a new behavior for snow).
 
 Edit the content like this:
 
@@ -373,33 +419,87 @@ Edit the content like this:
 {{< tabs >}}
   {{< tab TypeScript >}}
     {{< highlight typescript >}}
-import { ZBClient } from "zeebe-node";
+import { ZBClient } from "zeebe-node"
+import axios from axios
 
-const zbc = new ZBClient();
+const zbc = new ZBClient()
+const API_KEY = 'f504fb70e7c6e76703f0a88df83cdd59'
 
-zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success();
+zbc.createWorker(null, "get-weather-report", (job, complete) => {
+  console.log(JSON.stringify(job, null, 2))
+  const city = job.variables.city
+  try {
+      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
+
+      const weather = res.data.weather[0]
+      const weather_code = weather.id.toString[0] + "xx"
+      complete.success({
+          weather_code
+      })
+  } catch (e) {
+      console.error("Something went wrong!")
+      console.error(e)
+      complete.fail(e.message)
+  }
 });
+
+zbc.createWorker(null, "take-umbrella", (_, complete) => {
+    complete.success({
+        recommendation: "Take an umbrella!"
+    })
+})
+
+zbc.createWorker(null, "leave-umbrella", (_, complete) => {
+    complete.success({
+        recommendation: "Leave the umbrella at home!"
+    })
+})
 {{< /highlight >}}
 {{< /tab >}}
 {{< tab "JavaScript (ES6)">}}
 {{< highlight javaScript >}}
 const { ZBClient } = require('zeebe-node')
+const axios = require('axios')
 
-const zbc = new ZBClient();
+const zbc = new ZBClient()
+const API_KEY = 'f504fb70e7c6e76703f0a88df83cdd59'
 
-zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success();
+zbc.createWorker(null, "get-weather-report", (job, complete) => {
+  console.log(JSON.stringify(job, null, 2))
+  const city = job.variables.city
+  try {
+      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
+
+      const weather = res.data.weather[0]
+      const weather_code = weather.id.toString[0] + "xx"
+      complete.success({
+          weather_code
+      })
+  } catch (e) {
+      console.error("Something went wrong!")
+      console.error(e)
+      complete.fail(e.message)
+  }
 });
+
+zbc.createWorker(null, "take-umbrella", (_, complete) => {
+    complete.success({
+        recommendation: "Take an umbrella!"
+    })
+})
+
+zbc.createWorker(null, "leave-umbrella", (_, complete) => {
+    complete.success({
+        recommendation: "Leave the umbrella at home!"
+    })
+})
 {{< /highlight >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-When you run this, the worker polls the broker for jobs of type 'sample-task', and gets the job from the workflow you created in a previous step.
+When you run this, the first worker polls the broker for jobs of type 'get-weather-report' and gets the job from the workflow instance you created in a previous step. It prints out the `job` object it receives from the broker so you can see what that looks like, then it grabs the current weather report from a REST API, and adds a workflow variable `weather_code` with the code for the recommendation to be made.
+
+The broker then examines the variable to route the token in the workflow. One of the other workers then receives the job, and adds its recommendation to the workflow variables.
 
 ## Output: Create a Worker
 
@@ -408,9 +508,9 @@ You will see output similar to the following:
 ```
 {
   "key": "2251799813686445",
-  "type": "sample-task",
+  "type": "get-weather-report",
   "workflowInstanceKey": "2251799813686440",
-  "bpmnProcessId": "sample-process",
+  "bpmnProcessId": "weather-report",
   "workflowDefinitionVersion": 1,
   "workflowKey": "2251799813686430",
   "elementId": "ServiceTask_1aj1tsb",
@@ -419,55 +519,23 @@ You will see output similar to the following:
   "worker": "559fe180-c860-44ba-a6c5-8d32d6b9e026",
   "retries": 3,
   "deadline": "1574076501831",
-  "variables": {}
+  "variables": {
+      "city": "London,uk"
+  }
 }
 ```
 
-This is the job object that is received by the worker. Your worker can perform any side-effects and any calculations it needs to, and post any updates to the job variables.
+This is the job object that is received by the first worker. Your workers can perform any side-effects and any calculations they need to, and post any updates to the job variables.
 
-Your worker is sitting there polling for more work, so you can experiment with starting more workflows. Hit Ctrl-C to kill the worker when you are ready to move on.
+The workflow ran to completion, but only the first worker has an I/O side-effect, so you won't see any further feedback.
 
-## Update the job
+Your workers are sitting there polling for more work. Hit Ctrl-C to kill the worker when you are ready to move on.
+
+"_But where do I see the recommendation?_" I hear you ask. If you ran this against a local broker with Operate, or on Camunda Cloud, you could inspect the workflow in the Completed Instances filter in the Operate UI. You could log it out in the recommendation workers - but that's hardly useful in a real system. You probably want to get the outcome back to the requestor somehow. The simplest way to do this is to await the workflow outcome when starting it.
+
+## Get the output of a workflow
 
 This next step requires 0.22.0-alpha1 or later of the broker, and v0.22.0-alpha.1 or later of the Node client. We are going to use the `createWorkflowInstanceWithResult()` method of the client to await the outcome of the workflow. This method was introduced with that version and does not work in earlier versions.
-
-First, modify your worker like this:
-
-<!-- prettier-ignore -->
-{{< tabs >}}
-  {{< tab TypeScript >}}
-    {{< highlight typescript >}}
-import { ZBClient } from "zeebe-node";
-
-const zbc = new ZBClient();
-
-zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success({
-    updateId: 'some-uuid'
-  });
-});
-{{< /highlight >}}
-{{< /tab >}}
-{{< tab "JavaScript (ES6)">}}
-{{< highlight javaScript >}}
-const { ZBClient } = require('zeebe-node')
-
-const zbc = new ZBClient();
-
-zbc.createWorker(null, "sample-task", (job, complete) => {
-  console.log(JSON.stringify(job, null, 2));
-  // Business logic
-  complete.success({
-    updateId: 'some-uuid'
-  });
-});
-{{< /highlight >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-Here, we update the workflow variables from the worker. This update will be merged with the other variables in the workflow and will be the job variables that workers servicing tasks later in the process receive. There is only one task in our sample workflow, so we will use a method call that starts a workflow and awaits the result to inspect the variable state after our worker does its thing.
 
 Start the worker now, and modify `index.js|ts` to be this:
 
@@ -482,8 +550,8 @@ const zbc = new ZBClient()
 async function main() {
   try {
     await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
-      requestId: 'someRequestId'
+    const res = await zbc.createWorkflowInstanceWithResult('weather-report', {
+        city: "London,uk"
     });
     console.log(JSON.stringify(res, null, 2))
   } catch (e) {
@@ -503,8 +571,8 @@ const zbc = new ZBClient()
 async function main() {
   try {
     await zbc.deployWorkflow('./sample.bpmn')
-    const res = await zbc.createWorkflowInstanceWithResult('sample-process', {
-      requestId: 'someRequestId'
+    const res = await zbc.createWorkflowInstanceWithResult('weather-report', {
+        city: "London,uk"
     });
     console.log(JSON.stringify(res, null, 2))
   } catch (e) {
@@ -517,53 +585,30 @@ main()
 {{< /tab >}}
 {{< /tabs >}}
 
-## Output: Update the job
+## Output: Get the output of a workflow
 
-You will see output similar to the following in the worker:
-
-```
-{
-  "key": "2251799813686671",
-  "type": "sample-task",
-  "workflowInstanceKey": "2251799813686665",
-  "bpmnProcessId": "sample-process",
-  "workflowDefinitionVersion": 1,
-  "workflowKey": "2251799813686430",
-  "elementId": "ServiceTask_1aj1tsb",
-  "elementInstanceKey": "2251799813686670",
-  "customHeaders": {},
-  "worker": "819f09a4-7fde-4782-808d-9ed86c8ee363",
-  "retries": 3,
-  "deadline": "1574079338555",
-  "variables": {
-    "requestId": "someRequestId"
-  }
-}
-```
-
-We created the workflow instance with variable `requestId` set to `someRequestId`, and you can see that your worker receives this in the job variables.
-
-When the worker completes the job, it sends back an update: it sets `updateId` to `some-uuid`. In your process that creates and awaits the workflow, you will see something similar to the following:
+In your process that creates and awaits the workflow, you will see something similar to the following, depending on the current weather in London:
 
 ```
 {
   "workflowKey": "2251799813686430",
-  "bpmnProcessId": "sample-process",
+  "bpmnProcessId": "weather-report",
   "version": 1,
   "workflowInstanceKey": "2251799813686665",
   "variables": {
-    "updateId": "some-uuid",
-    "requestId": "someRequestId"
+    "city": "London,uk",
+    "weather_code": "2xx",
+    "recommendation": "Leave the umbrella at home!"
   }
 }
 ```
 
-The workflow variables were updated.
+The completed workflow variables are now output.
 
 ## Summary
 
-In this Quickstart you deployed a workflow definition, created instances of that workflow, created a worker to service the single task in the workflow, updated job variables, and awaited a workflow's outcome.
+In this Quickstart you deployed a workflow definition, created instances of that workflow, created workers to service the single task in the workflow, updated job variables, and awaited a workflow's outcome.
 
 This is 80% of what you'll be doing with the Zeebe Node client in your application.
 
-The rest of this guide goes into more depth on each of these aspects, and also covers the other methods that are available.
+The rest of this guide covers each of these aspects in more depth, and covers the other available methods
