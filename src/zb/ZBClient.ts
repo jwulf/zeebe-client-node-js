@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { ConsecutiveBreaker, Policy } from 'cockatiel'
 import { EventEmitter } from 'events'
 import * as fs from 'fs'
 import * as path from 'path'
