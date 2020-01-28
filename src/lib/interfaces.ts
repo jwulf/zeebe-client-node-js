@@ -239,8 +239,21 @@ export interface ZBWorkerOptions {
 }
 
 export interface CreateWorkflowInstanceRequest<Variables = KeyedObject> {
+	/**
+	 * The BPMN process ID of the workflow definition
+	 */
 	bpmnProcessId: string
+	/**
+	 * The version of the process; set to -1 to use the latest version
+	 */
 	version?: number
+	/**
+	 * Stringified JSON document that will instantiate the variables for the root variable scope of the
+	 * workflow instance; it must be a JSON object, as variables will be mapped in a
+	 * key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
+	 * "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a\
+	 * valid argument, as the root of the JSON document is an array and not an object.
+	 */
 	variables: Variables
 }
 
@@ -259,11 +272,7 @@ export interface CreateWorkflowInstanceResponse {
 	 */
 	readonly version: number
 	/**
-	 * Stringified JSON document that will instantiate the variables for the root variable scope of the
-	 * workflow instance; it must be a JSON object, as variables will be mapped in a
-	 * key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
-	 * "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a\
-	 * valid argument, as the root of the JSON document is an array and not an object.
+	 * The workflow instance Id
 	 */
 	readonly workflowInstanceKey: string
 }
