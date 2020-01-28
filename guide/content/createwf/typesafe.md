@@ -5,8 +5,6 @@ date: 2019-10-27T17:01:15+10:00
 draft: false
 ---
 
-# Type-safe applications
-
 Both the `createWorkflowInstance` and `createWorkflowInstanceWithResult` methods of the ZBClient have parameterised types, also known as generic types. These can provide a degree of type-checking and intellisense for the `variables` payload while coding.
 
 By default they are set to `any`, so you can ignore them and the `variables` in and out of these functions can be anything.
