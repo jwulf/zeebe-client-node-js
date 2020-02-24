@@ -126,7 +126,7 @@ import { postMessage } from './my-http-log-sink'
 // Use a custom log sink
 const zbc = new ZBClient({
   loglevel: 'ERROR',
-  stdio: {
+  stdout: {
     info: msg => postMessage(msg)
   }
 })
@@ -148,11 +148,11 @@ const zbc = new ZBClient({
 {{< /tab >}}
 {{< /tabs >}}
 
-For an example of a custom logger, see the implementation in the [Node-RED Zeebe package](https://github.com/pedesen/node-red-contrib-zeebe/blob/master/src/util/logger.js).
+For an example of a custom logger, see the implementation in the [Node-RED Zeebe package](https://github.com/pedesen/node-red-contrib-zeebe/blob/master/src/util/logger.js). For a more sophisticated example, see the implementation in the [Zeebe GitHub Action](https://github.com/jwulf/zeebe-action/blob/master/src/log/logger.ts#L14).
 
 ## Logging in ZBWorker
 
-The ZBWorker inherits its log settings from the ZBClient that creates it. You can also override any of the settings in the `createWorker` method call. 
+The ZBWorker inherits its log settings from the ZBClient that creates it. You can also override any of the settings in the `createWorker` method call.
 
 By default the ZBWorker logs with the namespace "ZBWorker". If a custom namespace has been set for the ZBClient, the ZBWorker inherits it and prepends "ZBWorker" to it. If you override this with an explicit namespace, "ZBWorker" is prepended to that.
 
